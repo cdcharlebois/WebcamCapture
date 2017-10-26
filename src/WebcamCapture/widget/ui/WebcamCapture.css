@@ -1,0 +1,5 @@
+.webcam-capture {}
+
+.webcam-capture canvas {
+    display: none;
+}
