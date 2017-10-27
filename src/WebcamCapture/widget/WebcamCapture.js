@@ -21,7 +21,10 @@ define([
 
     return declare("WebcamCapture.widget.WebcamCapture", [_WidgetBase], {
 
-
+        width: null,
+        wunit: null,
+        onUploaded: null,
+        buttonText: null,
         // Internal variables.
         _handles: null,
         _contextObj: null,
@@ -42,13 +45,13 @@ define([
 
                 this.videoEl = document.createElement("video");
                 this.videoEl.id = "video";
-                this.videoEl.width = "640";
-                this.videoEl.height = "480";
+                this.videoEl.setAttribute("width", this.width + (this.wunit = "percent" ? "%" : "px"));
                 this.videoEl.autoplay = "true";
 
                 this.buttonEl = document.createElement("button");
                 this.buttonEl.id = "snap";
-                this.buttonEl.innerHTML = "Capture";
+                this.buttonEl.innerHTML = this.buttonText;
+                this.buttonEl.className = "mx-button " + this.buttonClass;
 
                 this.domNode.appendChild(this.videoEl);
                 this.domNode.appendChild(this.buttonEl);
@@ -128,8 +131,22 @@ define([
                         blob,
                         lang.hitch(this, function() {
                             console.log("ok");
-                            this.mxform.reload();
-
+                            // this.mxform.reload(); // fine for pages for the context is parameter
+                            if (this.onUploaded) {
+                                mx.data.action({
+                                    params: {
+                                        applyto: "selection",
+                                        actionname: this.onUploaded,
+                                        guids: [this._contextObj.getGuid()],
+                                    },
+                                    callback: function(obj) {
+                                        console.log("mf ok")
+                                    },
+                                    error: function(error) {
+                                        alert(error.description);
+                                    }
+                                }, this);
+                            }
                         }),
                         function(err) {
                             console.error("error");
