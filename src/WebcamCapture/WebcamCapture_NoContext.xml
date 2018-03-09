@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<widget id="WebcamCapture.widget.WebcamCapture" needsEntityContext="true" 
+<widget id="WebcamCapture.widget.WebcamCaptureNoContext" needsEntityContext="false" 
     xmlns="http://www.mendix.com/widget/1.0/">
-    <name>WebcamCapture</name>
+    <name>WebcamCapture No Context</name>
     <description>The description of this widget.</description>
     <icon />
     <properties>
-        <property key="onUploaded" type="microflow" required="false">
+        <property key="imageEntity" type="entity" allowNonPersistableEntities="false" required="true">
+          <caption>Image Entity (to create)</caption>
+          <category>General</category>
+          <description></description>
+        </property>
+        <property key="onUploaded" type="microflow" required="false" entityProperty="imageEntity">
             <caption>Callback</caption>
             <category>General</category>
             <description>Microflow to call with the newly uploaded image as a parameter.</description>
